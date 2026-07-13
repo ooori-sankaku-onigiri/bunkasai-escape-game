@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff4fa">
+  <title>クリアおめでとう！</title>
+  <style>
+    :root {
+      --pink: #ff8fbc;
+      --deep-pink: #ed5d9b;
+      --blue: #8edcf2;
+      --yellow: #ffd96a;
+      --ink: #573f5c;
+      --cream: #fffaf0;
+    }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, #fff 0 8%, transparent 9%),
+        radial-gradient(circle at 85% 20%, #fff 0 5%, transparent 6%),
+        linear-gradient(145deg, #fff4fa 0%, #eefaff 50%, #fff9e5 100%);
+    }
+    body::before, body::after {
+      position: fixed; z-index: -1; content: ""; border-radius: 50%; filter: blur(2px); opacity: .55;
+    }
+    body::before { width: 190px; height: 190px; left: -95px; top: 28%; background: #ffc5df; }
+    body::after { width: 230px; height: 230px; right: -110px; bottom: 8%; background: #bceefa; }
+    main { width: min(100%, 480px); min-height: 100svh; margin: auto; padding: 28px 20px max(28px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .eyebrow { margin: 0 0 9px; font-size: .8rem; font-weight: 800; letter-spacing: .16em; color: var(--deep-pink); }
+    h1 { margin: 0; font-size: clamp(2rem, 9vw, 3rem); line-height: 1.15; color: #e85496; text-shadow: 2px 3px 0 #fff; }
+    .subtitle { margin: 10px 0 0; font-size: .95rem; font-weight: 700; }
+    .stage { position: relative; width: min(100%, 360px); height: 360px; display: grid; place-items: center; margin: 18px 0 4px; }
+    #confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .glow { position: absolute; width: 220px; height: 220px; border-radius: 50%; background: #fff2a3; opacity: 0; filter: blur(22px); transform: scale(.4); }
+    .chest { position: relative; width: 190px; height: 142px; transform: translateY(32px); transition: transform .35s ease; }
+    .chest-body { position: absolute; bottom: 0; width: 190px; height: 103px; border: 5px solid #934d42; border-radius: 8px 8px 22px 22px; background: linear-gradient(90deg, #c8754d, #f2a263 48%, #c8754d); box-shadow: 0 12px 0 #a85e54, 0 18px 22px #b66d7955; }
+    .chest-body::after { content: ""; position: absolute; left: 0; right: 0; top: 23px; border-top: 5px solid #a65d45; }
+    .lid { position: absolute; z-index: 2; left: 0; top: 16px; width: 190px; height: 68px; border: 5px solid #934d42; border-radius: 15px 15px 5px 5px; background: linear-gradient(90deg, #c8754d, #f5ae6c 48%, #c8754d); transform-origin: 50% 100%; transition: transform 1s cubic-bezier(.2,.8,.2,1); }
+    .band { position: absolute; left: 79px; top: -5px; bottom: -5px; width: 27px; border: 4px solid #d19436; background: #ffd96a; }
+    .lock { position: absolute; z-index: 3; left: 76px; top: 66px; width: 39px; height: 48px; border: 5px solid #9f662b; border-radius: 7px; background: #ffd96a; box-shadow: inset 0 -8px #eab448; }
+    .lock::before { content: ""; position: absolute; left: 7px; top: -27px; width: 16px; height: 24px; border: 5px solid #9f662b; border-bottom: 0; border-radius: 14px 14px 0 0; }
+    .keyhole { position: absolute; left: 13px; top: 17px; width: 8px; height: 12px; border-radius: 50%; background: #8b5b2b; }
+    .sparkles { position: absolute; inset: 0; opacity: 0; }
+    .sparkles span { position: absolute; font-size: 2rem; color: #fff; text-shadow: 0 0 12px #fff17a; }
+    .sparkles span:nth-child(1) { left: 24%; top: 20%; } .sparkles span:nth-child(2) { right: 18%; top: 30%; font-size: 1.4rem; } .sparkles span:nth-child(3) { left: 20%; top: 58%; font-size: 1.3rem; } .sparkles span:nth-child(4) { right: 20%; top: 62%; }
+    .prompt { position: absolute; bottom: 4px; margin: 0; font-weight: 800; color: #8c6b87; }
+    .open-button, .share-button { border: 0; border-radius: 999px; color: #fff; font: inherit; font-weight: 900; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .open-button { padding: 15px 30px; font-size: 1.1rem; background: linear-gradient(135deg, #ff91bc, #ed6aa5); box-shadow: 0 7px 0 #cb568b, 0 13px 25px #e96d9c55; }
+    .open-button:active, .share-button:active { transform: translateY(3px); box-shadow: 0 4px 0 #cb568b; }
+    .result { display: none; animation: pop .7s cubic-bezier(.2,1.5,.4,1) both; }
+    .result h2 { margin: 12px 0 6px; font-size: clamp(2.7rem, 13vw, 4.2rem); color: #f05c99; line-height: 1; text-shadow: 3px 4px #fff; }
+    .result p { margin: 0 0 15px; font-weight: 800; }
+    .share-button { padding: 12px 22px; background: #5b536b; box-shadow: 0 5px 0 #403a4e; }
+    .hint { margin-top: 15px; font-size: .72rem; opacity: .65; }
+    .celebrate .glow { animation: glow 1.4s ease-out both; }
+    .celebrate .lid { transform: rotateX(125deg) translateY(-12px); }
+    .celebrate .chest { transform: translateY(48px); }
+    .celebrate .lock { opacity: 0; transition: opacity .25s .35s; }
+    .celebrate .sparkles { animation: sparkle 1.2s .15s ease-out both; }
+    @keyframes glow { 0% { opacity: 0; transform: scale(.4); } 35% { opacity: .95; transform: scale(1.25); } 100% { opacity: .15; transform: scale(1.6); } }
+    @keyframes sparkle { 0% { opacity: 0; transform: scale(.4); } 35% { opacity: 1; transform: scale(1.15); } 100% { opacity: 0; transform: scale(1.5); } }
+    @keyframes pop { from { opacity: 0; transform: scale(.5) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">ESCAPE GAME CLEAR</p>
+    <h1>脱出成功！</h1>
+    <p class="subtitle">宝箱の中身を受け取ろう</p>
+    <section class="stage" aria-label="宝箱の演出">
+      <div class="glow" aria-hidden="true"></div>
+      <div class="chest" aria-hidden="true">
+        <div class="lid"><div class="band"></div></div>
+        <div class="chest-body"><div class="band"></div></div>
+        <div class="lock"><span class="keyhole"></span></div>
+        <div class="sparkles"><span>✦</span><span>✧</span><span>✦</span><span>✧</span></div>
+      </div>
+      <p class="prompt" id="prompt">タップして宝箱を開ける！</p>
+      <canvas id="confetti" aria-hidden="true"></canvas>
+    </section>
+    <button class="open-button" id="openButton" type="button">🎁 開ける</button>
+    <section class="result" id="result" aria-live="polite">
+      <h2>おめでとう！</h2>
+      <p>高校文化祭の脱出ゲーム、クリアです！🎉</p>
+      <button class="share-button" id="shareButton" type="button">𝕏 クリアをシェア</button>
+      <p class="hint">景品の受け取りはスタッフに画面を見せてください</p>
+    </section>
+  </main>
+  <script>
+    (() => {
+      const button = document.getElementById('openButton');
+      const prompt = document.getElementById('prompt');
+      const result = document.getElementById('result');
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      let opened = false;
+
+      function fitCanvas() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      function sound() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const audio = new AudioContext();
+        const now = audio.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+        notes.forEach((freq, i) => {
+          const osc = audio.createOscillator(), gain = audio.createGain();
+          osc.type = i === 0 ? 'triangle' : 'sine'; osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.0001, now + i * .11);
+          gain.gain.exponentialRampToValueAtTime(.16, now + i * .11 + .025);
+          gain.gain.exponentialRampToValueAtTime(.0001, now + i * .11 + .45);
+          osc.connect(gain).connect(audio.destination); osc.start(now + i * .11); osc.stop(now + i * .11 + .5);
+        });
+        setTimeout(() => audio.close(), 1800);
+      }
+      function confetti() {
+        fitCanvas();
+        const rect = canvas.getBoundingClientRect(), colors = ['#ff8fbc','#8edcf2','#ffd96a','#b8e986','#c7a7f5'];
+        const pieces = Array.from({length: 90}, () => ({ x: rect.width / 2 + (Math.random() - .5) * 70, y: rect.height * .48, vx: (Math.random() - .5) * 8, vy: -Math.random() * 10 - 4, size: Math.random() * 7 + 4, color: colors[Math.floor(Math.random() * colors.length)], rot: Math.random() * 6, spin: (Math.random() - .5) * .25 }));
+        const start = performance.now();
+        function frame(time) {
+          ctx.clearRect(0, 0, rect.width, rect.height);
+          pieces.forEach(p => { p.x += p.vx; p.vy += .22; p.y += p.vy; p.rot += p.spin; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.color; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.55); ctx.restore(); });
+          if (time - start < 2800) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }
+      function openChest() {
+        if (opened) return;
+        opened = true; document.body.classList.add('celebrate'); button.hidden = true; prompt.hidden = true; sound(); confetti();
+        setTimeout(() => { result.style.display = 'block'; }, 850);
+      }
+      button.addEventListener('click', openChest);
+      document.getElementById('shareButton').addEventListener('click', async () => {
+        const text = '高校文化祭の脱出ゲーム「誰でも名探偵になれる説」をクリアしました！🎉';
+        if (navigator.share) { try { await navigator.share({ title: '謎解きクリア！', text }); return; } catch (_) {} }
+        const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
+        window.open(url, '_blank', 'noopener,noreferrer');
+      });
+      window.addEventListener('resize', () => { if (opened) fitCanvas(); });
+    })();
+  </script>
+</body>
+</html>
