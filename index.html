@@ -31,7 +31,7 @@
     }
     body::before { width: 190px; height: 190px; left: -95px; top: 28%; background: #ffc5df; }
     body::after { width: 230px; height: 230px; right: -110px; bottom: 8%; background: #bceefa; }
-    main { width: min(100%, 480px); min-height: 100svh; margin: auto; padding: 28px 20px max(28px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; text-align: center; }
+    main { width: min(100%, 480px); min-height: 100svh; margin: auto; padding: clamp(48px, 9svh, 80px) 20px max(28px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; text-align: center; }
     .eyebrow { margin: 0 0 9px; font-size: .8rem; font-weight: 800; letter-spacing: .16em; color: var(--deep-pink); }
     h1 { margin: 0; font-size: clamp(2rem, 9vw, 3rem); line-height: 1.15; color: #e85496; text-shadow: 2px 3px 0 #fff; }
     .subtitle { margin: 10px 0 0; font-size: .95rem; font-weight: 700; }
@@ -90,7 +90,6 @@
       <h2>おめでとう！</h2>
       <p>君も名探偵だ！</p>
       <button class="share-button" id="shareButton" type="button">𝕏 クリアをシェア</button>
-      <p class="hint">景品の受け取りはスタッフに画面を見せてください</p>
     </section>
   </main>
   <script>
