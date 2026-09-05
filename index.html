@@ -50,13 +50,12 @@
     .sparkles span { position: absolute; font-size: 2rem; color: #fff; text-shadow: 0 0 12px #fff17a; }
     .sparkles span:nth-child(1) { left: 24%; top: 20%; } .sparkles span:nth-child(2) { right: 18%; top: 30%; font-size: 1.4rem; } .sparkles span:nth-child(3) { left: 20%; top: 58%; font-size: 1.3rem; } .sparkles span:nth-child(4) { right: 20%; top: 62%; }
     .prompt { position: absolute; bottom: 4px; margin: 0; font-weight: 800; color: #8c6b87; }
-    .open-button, .share-button { border: 0; border-radius: 999px; color: #fff; font: inherit; font-weight: 900; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .open-button { border: 0; border-radius: 999px; color: #fff; font: inherit; font-weight: 900; cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .open-button { padding: 15px 30px; font-size: 1.1rem; background: linear-gradient(135deg, #ff91bc, #ed6aa5); box-shadow: 0 7px 0 #cb568b, 0 13px 25px #e96d9c55; }
-    .open-button:active, .share-button:active { transform: translateY(3px); box-shadow: 0 4px 0 #cb568b; }
+    .open-button:active { transform: translateY(3px); box-shadow: 0 4px 0 #cb568b; }
     .result { display: none; animation: pop .7s cubic-bezier(.2,1.5,.4,1) both; }
     .result h2 { margin: 12px 0 6px; font-size: clamp(2.7rem, 13vw, 4.2rem); color: #f05c99; line-height: 1; text-shadow: 3px 4px #fff; }
     .result p { margin: 0 0 15px; font-weight: 800; }
-    .share-button { padding: 12px 22px; background: #5b536b; box-shadow: 0 5px 0 #403a4e; }
     .hint { margin-top: 15px; font-size: .72rem; opacity: .65; }
     .celebrate .glow { animation: glow 1.4s ease-out both; }
     .celebrate .lid { transform: rotateX(125deg) translateY(-12px); }
@@ -89,7 +88,6 @@
     <section class="result" id="result" aria-live="polite">
       <h2>おめでとう！</h2>
       <p>君も名探偵だ！</p>
-      <button class="share-button" id="shareButton" type="button">𝕏 クリアをシェア</button>
     </section>
   </main>
   <script>
@@ -141,12 +139,6 @@
         setTimeout(() => { result.style.display = 'block'; }, 850);
       }
       button.addEventListener('click', openChest);
-      document.getElementById('shareButton').addEventListener('click', async () => {
-        const text = '高校文化祭の脱出ゲーム「誰でも名探偵になれる説」をクリアしました！🎉';
-        if (navigator.share) { try { await navigator.share({ title: '謎解きクリア！', text }); return; } catch (_) {} }
-        const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
-        window.open(url, '_blank', 'noopener,noreferrer');
-      });
       window.addEventListener('resize', () => { if (opened) fitCanvas(); });
     })();
   </script>
